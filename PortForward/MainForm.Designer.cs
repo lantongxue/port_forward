@@ -29,11 +29,7 @@ namespace PortForward
         /// </summary>
         private void InitializeComponent()
         {
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -45,45 +41,22 @@ namespace PortForward
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Image = global::PortForward.Properties.Resources.新增;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(52, 24);
-            this.toolStripButton1.Text = "新增";
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.Image = global::PortForward.Properties.Resources.删除;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(52, 29);
-            this.toolStripButton2.Text = "删除";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
-            // 
-            // toolStripButton3
-            // 
-            this.toolStripButton3.Image = global::PortForward.Properties.Resources.启动;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(52, 29);
-            this.toolStripButton3.Text = "启动";
-            // 
-            // toolStripButton4
-            // 
-            this.toolStripButton4.Image = global::PortForward.Properties.Resources.停止;
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(52, 29);
-            this.toolStripButton4.Text = "停止";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
             // toolStrip1
             // 
@@ -94,7 +67,12 @@ namespace PortForward
             this.toolStripButton2,
             this.toolStripSeparator1,
             this.toolStripButton3,
-            this.toolStripButton4});
+            this.toolStripButton4,
+            this.toolStripSeparator2,
+            this.toolStripLabel3,
+            this.toolStripLabel1,
+            this.toolStripLabel2,
+            this.toolStripSeparator3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 461);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(919, 27);
@@ -126,6 +104,7 @@ namespace PortForward
             // columnHeader1
             // 
             this.columnHeader1.Text = "名称";
+            this.columnHeader1.Width = 85;
             // 
             // columnHeader2
             // 
@@ -167,6 +146,68 @@ namespace PortForward
             this.columnHeader9.Text = "总下载流量";
             this.columnHeader9.Width = 100;
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Image = global::PortForward.Properties.Resources.下载;
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(59, 24);
+            this.toolStripLabel2.Text = "0.00/s";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Image = global::PortForward.Properties.Resources.新增;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(52, 24);
+            this.toolStripButton1.Text = "新增";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Image = global::PortForward.Properties.Resources.删除;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(52, 24);
+            this.toolStripButton2.Text = "删除";
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.Image = global::PortForward.Properties.Resources.启动;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(52, 24);
+            this.toolStripButton3.Text = "启动";
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.Image = global::PortForward.Properties.Resources.停止;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(52, 24);
+            this.toolStripButton4.Text = "停止";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Image = global::PortForward.Properties.Resources.上传;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(59, 24);
+            this.toolStripLabel1.Text = "0.00/s";
+            // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(56, 24);
+            this.toolStripLabel3.Text = "当前速率";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -201,6 +242,11 @@ namespace PortForward
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 
