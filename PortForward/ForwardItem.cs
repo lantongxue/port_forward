@@ -4,10 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Forms;
 
 namespace PortForward
 {
-    public class ForwardItem
+    public class ForwardItem : ListViewItem
     {
         public ForwardItem()
         {
@@ -15,10 +16,15 @@ namespace PortForward
             State = ForwardState.Stopped;
         }
 
+        public new string Text
+        {
+            get => Title;
+        }
+
         private string _id;
         public string Id { get => _id; }
 
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         public string LocalListenAddress { get; set; }
 

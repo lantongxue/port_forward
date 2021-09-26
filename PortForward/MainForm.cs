@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.ListViewItem;
 
 namespace PortForward
 {
@@ -22,20 +23,8 @@ namespace PortForward
             if(form.ShowDialog() == DialogResult.OK)
             {
                 ForwardItem item = form.GetForwardItem();
-                ListViewItem listViewItem = new ListViewItem(new string[] { 
-                    item.Name,
-                    item.LocalListenAddress,
-                    item.LocalListenPort.ToString(),
-                    item.RemoteAddress,
-                    item.RemotePort.ToString(),
-                    item.UploadSpeed.ToString(),
-                    item.DownloadSpeed.ToString(),
-                    item.TotalUpload.ToString(),
-                    item.TotalDownload.ToString(),
-                });
+                listView1.Items.Add(item);
                 item.Start();
-                listViewItem.Tag = item;
-                listView1.Items.Add(listViewItem);
             }
         }
     }
