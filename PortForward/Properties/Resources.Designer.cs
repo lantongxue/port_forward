@@ -83,9 +83,29 @@ namespace PortForward.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap 保存 {
+            get {
+                object obj = ResourceManager.GetObject("保存", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 停止 {
             get {
                 object obj = ResourceManager.GetObject("停止", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 关闭 {
+            get {
+                object obj = ResourceManager.GetObject("关闭", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
