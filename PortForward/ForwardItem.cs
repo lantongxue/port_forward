@@ -276,7 +276,7 @@ namespace PortForward
             _LocalClientSockets.Add(client);
 
             MessageHandler message = new MessageHandler(client);
-            client.BeginReceive(message.GetData, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
+            client.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
 
             LocalServerSocket.BeginAccept(_BeginAcceptFromLocalServer, null);
         }
@@ -291,7 +291,9 @@ namespace PortForward
                 TotalDownload += count; // 总下载字节数
             }));
 
-            message.clientSocket.BeginReceive(message.GetData, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
+            byte[] data = message.GetData(count);
+
+            message.clientSocket.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
         }
     }
 
@@ -309,7 +311,7 @@ namespace PortForward
         private byte[] data = new byte[MaxLength];
         private int Index = 0;
 
-        public byte[] GetData
+        public byte[] Buffer
         {
             get { return data; }
         }
@@ -322,6 +324,13 @@ namespace PortForward
         public int GetIndex
         {
             get { return Index; }
+        }
+
+        public byte[] GetData(int recv)
+        {
+            byte[] data = new byte[recv];
+            Array.Copy(Buffer, data, recv);
+            return data;
         }
     }
 
