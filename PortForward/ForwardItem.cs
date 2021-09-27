@@ -5,10 +5,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.ListViewItem;
 
 namespace PortForward
 {
-    public class ForwardItem : ListViewItem
+    public class ForwardItem
     {
         public ForwardItem()
         {
@@ -16,32 +17,135 @@ namespace PortForward
             State = ForwardState.Stopped;
         }
 
-        public new string Text
+        private ListViewItem _item;
+        public ListViewItem Item
         {
-            get => Title;
+            get => _item;
+            set
+            {
+                _item = value;
+                _item.SubItems.Clear();
+                _item.Text = Title;
+                _item.SubItems.AddRange(_buildSubItems(_item));
+            }
+        }
+
+        private ListViewSubItem[] _buildSubItems(ListViewItem owner)
+        {
+            return new ListViewSubItem[] {
+                //new ListViewSubItem(owner, Title),
+                new ListViewSubItem(owner, LocalListenAddress),
+                new ListViewSubItem(owner, LocalListenPort.ToString()),
+                new ListViewSubItem(owner, RemoteAddress),
+                new ListViewSubItem(owner, RemotePort.ToString()),
+                new ListViewSubItem(owner, UploadSpeed.ToString()),
+                new ListViewSubItem(owner, DownloadSpeed.ToString()),
+                new ListViewSubItem(owner, TotalUpload.ToString()),
+                new ListViewSubItem(owner, TotalDownload.ToString()),
+            };
         }
 
         private string _id;
         public string Id { get => _id; }
 
-        public string Title { get; set; }
+        public string _title;
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                if(Item != null) Item.Text = _title;
+            }
+        }
 
-        public string LocalListenAddress { get; set; }
+        public string _localListenAddress;
+        public string LocalListenAddress
+        {
+            get => _localListenAddress;
+            set
+            {
+                _localListenAddress = value;
+                if (Item != null) Item.SubItems[1].Text = _localListenAddress;
+            }
+        }
 
-        public int LocalListenPort { get; set; }
+        public int _localListenPort;
+        public int LocalListenPort
+        {
+            get => _localListenPort;
+            set
+            {
+                _localListenPort = value;
+                if (Item != null) Item.SubItems[2].Text = _localListenPort.ToString();
+            }
+        }
 
-        public string RemoteAddress { get; set; }
+        public string _remoteAddress;
+        public string RemoteAddress
+        {
+            get => _remoteAddress;
+            set
+            {
+                _remoteAddress = value;
+                if (Item != null) Item.SubItems[3].Text = _remoteAddress;
+            }
+        }
 
-        public int RemotePort { get; set; }
+        public int _remotePort;
+        public int RemotePort
+        {
+            get => _remotePort;
+            set
+            {
+                _remotePort = value;
+                if (Item != null) Item.SubItems[4].Text = _remotePort.ToString();
+            }
+        }
 
-        public long UploadSpeed { get; set; }
+        public long _uploadSpeed;
+        public long UploadSpeed
+        {
+            get => _uploadSpeed;
+            set
+            {
+                _uploadSpeed = value;
+                if (Item != null) Item.SubItems[5].Text = _uploadSpeed.ToString();
+            }
+        }
 
-        public long DownloadSpeed { get; set; }
+        public long _downloadSpeed;
+        public long DownloadSpeed
+        {
+            get => _downloadSpeed;
+            set
+            {
+                _downloadSpeed = value;
+                if (Item != null) Item.SubItems[6].Text = _downloadSpeed.ToString();
+            }
+        }
 
-        public long TotalUpload { get; set; }
+        public long _totalUpload;
+        public long TotalUpload
+        {
+            get => _totalUpload;
+            set
+            {
+                _totalUpload = value;
+                if (Item != null) Item.SubItems[7].Text = _totalUpload.ToString();
+            }
+        }
 
-        public long TotalDownload { get; set; }
-
+        public long _totalDownload;
+        public long TotalDownload
+        {
+            get => _totalDownload;
+            set
+            {
+                _totalDownload = value;
+                if (Item != null) Item.SubItems[8].Text = _totalDownload.ToString();
+            }
+        }
 
         public ForwardProtocol Protocol { get; set; }
 
@@ -183,8 +287,10 @@ namespace PortForward
 
             int count = message.clientSocket.EndReceive(ar);
 
-            TotalDownload += count; // 总下载字节数
-            
+            Item.ListView.Invoke(new Action(() => {
+                TotalDownload += count; // 总下载字节数
+            }));
+
             message.clientSocket.BeginReceive(message.GetData, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
         }
     }

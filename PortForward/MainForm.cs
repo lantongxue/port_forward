@@ -22,9 +22,11 @@ namespace PortForward
             EditForm form = new EditForm();
             if(form.ShowDialog() == DialogResult.OK)
             {
-                ForwardItem item = form.GetForwardItem();
+                ForwardItem forward = form.GetForwardItem();
+                ListViewItem item = new ListViewItem();
+                forward.Item = item;
                 listView1.Items.Add(item);
-                item.Start();
+                forward.Start();
             }
         }
     }

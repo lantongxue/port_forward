@@ -50,7 +50,7 @@ namespace PortForward
                 return;
             }
 
-            forwardItem.Name = textBox3.Text;
+            forwardItem.Title = textBox3.Text;
             forwardItem.LocalListenAddress = textBox1.Text;
             forwardItem.LocalListenPort = Convert.ToInt32(numericUpDown1.Value);
             forwardItem.RemoteAddress = textBox2.Text;

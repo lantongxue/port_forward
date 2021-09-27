@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoubleBufferListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="EditForm.cs">
       <SubType>Form</SubType>
     </Compile>
