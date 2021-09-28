@@ -41,7 +41,10 @@ namespace PortForward
                 ForwardItem forward = form.GetForwardItem();
                 ListViewItem item = new ListViewItem();
                 forward.Item = item;
+                item.Tag = forward;
+
                 listView1.Items.Add(item);
+
                 forward.Start();
                 forwardManage.Add(forward);
             }

@@ -11,12 +11,23 @@ namespace PortForward
 {
     public partial class EditForm : Form
     {
+        ForwardItem forwardItem = new ForwardItem();
+
         public EditForm()
         {
             InitializeComponent();
         }
 
-        public ForwardItem forwardItem = new ForwardItem();
+        public EditForm(ForwardItem forward)
+        {
+            InitializeComponent();
+            forwardItem = forward;
+        }
+
+        private void EditForm_Load(object sender, EventArgs e)
+        {
+
+        }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -84,5 +95,7 @@ namespace PortForward
         {
             return forwardItem;
         }
+
+        
     }
 }
