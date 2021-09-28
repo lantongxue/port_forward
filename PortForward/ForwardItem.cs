@@ -33,22 +33,25 @@ namespace PortForward
         private ListViewSubItem[] _buildSubItems(ListViewItem owner)
         {
             return new ListViewSubItem[] {
-                //new ListViewSubItem(owner, Title),
+                new ListViewSubItem(owner, Protocol.ToString()),
+                new ListViewSubItem(owner, State.ToString()),
                 new ListViewSubItem(owner, LocalListenAddress),
                 new ListViewSubItem(owner, LocalListenPort.ToString()),
                 new ListViewSubItem(owner, RemoteAddress),
                 new ListViewSubItem(owner, RemotePort.ToString()),
-                new ListViewSubItem(owner, UploadSpeed.ToString()),
-                new ListViewSubItem(owner, DownloadSpeed.ToString()),
-                new ListViewSubItem(owner, TotalUpload.ToString()),
-                new ListViewSubItem(owner, TotalDownload.ToString()),
+                new ListViewSubItem(owner, NetworkTools.BytesFormat(UploadSpeed)),
+                new ListViewSubItem(owner, NetworkTools.BytesFormat(DownloadSpeed)),
+                new ListViewSubItem(owner, NetworkTools.BytesFormat(TotalUpload)),
+                new ListViewSubItem(owner, NetworkTools.BytesFormat(TotalDownload)),
             };
         }
 
         private string _id;
-        public string Id { get => _id; }
+        [Save()]
+        public string Id { get => _id; set { _id = value; } }
 
         public string _title;
+        [Save()]
         public string Title
         {
             get => _title;
@@ -59,47 +62,76 @@ namespace PortForward
             }
         }
 
+        private ForwardProtocol _protocol;
+        [Save()]
+        public ForwardProtocol Protocol
+        {
+            get => _protocol;
+            set
+            {
+                _protocol = value;
+                if (Item != null) Item.SubItems[1].Text = _protocol.ToString();
+            }
+        }
+
+
+        private ForwardState _state;
+        [Save()]
+        public ForwardState State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                if (Item != null) Item.SubItems[2].Text = _state.ToString();
+            }
+        }
+
         public string _localListenAddress;
+        [Save()]
         public string LocalListenAddress
         {
             get => _localListenAddress;
             set
             {
                 _localListenAddress = value;
-                if (Item != null) Item.SubItems[1].Text = _localListenAddress;
+                if (Item != null) Item.SubItems[3].Text = _localListenAddress;
             }
         }
 
         public int _localListenPort;
+        [Save()]
         public int LocalListenPort
         {
             get => _localListenPort;
             set
             {
                 _localListenPort = value;
-                if (Item != null) Item.SubItems[2].Text = _localListenPort.ToString();
+                if (Item != null) Item.SubItems[4].Text = _localListenPort.ToString();
             }
         }
 
         public string _remoteAddress;
+        [Save()]
         public string RemoteAddress
         {
             get => _remoteAddress;
             set
             {
                 _remoteAddress = value;
-                if (Item != null) Item.SubItems[3].Text = _remoteAddress;
+                if (Item != null) Item.SubItems[5].Text = _remoteAddress;
             }
         }
 
         public int _remotePort;
+        [Save()]
         public int RemotePort
         {
             get => _remotePort;
             set
             {
                 _remotePort = value;
-                if (Item != null) Item.SubItems[4].Text = _remotePort.ToString();
+                if (Item != null) Item.SubItems[6].Text = _remotePort.ToString();
             }
         }
 
@@ -110,7 +142,7 @@ namespace PortForward
             set
             {
                 _uploadSpeed = value;
-                if (Item != null) Item.SubItems[5].Text = _uploadSpeed.ToString();
+                if (Item != null) Item.SubItems[7].Text = NetworkTools.BytesFormat(_uploadSpeed);
             }
         }
 
@@ -121,35 +153,33 @@ namespace PortForward
             set
             {
                 _downloadSpeed = value;
-                if (Item != null) Item.SubItems[6].Text = _downloadSpeed.ToString();
+                if (Item != null) Item.SubItems[8].Text = NetworkTools.BytesFormat(_downloadSpeed);
             }
         }
 
         public long _totalUpload;
+        [Save()]
         public long TotalUpload
         {
             get => _totalUpload;
             set
             {
                 _totalUpload = value;
-                if (Item != null) Item.SubItems[7].Text = _totalUpload.ToString();
+                if (Item != null) Item.SubItems[9].Text = NetworkTools.BytesFormat(_totalUpload);
             }
         }
 
         public long _totalDownload;
+        [Save()]
         public long TotalDownload
         {
             get => _totalDownload;
             set
             {
                 _totalDownload = value;
-                if (Item != null) Item.SubItems[8].Text = _totalDownload.ToString();
+                if (Item != null) Item.SubItems[10].Text = NetworkTools.BytesFormat(_totalDownload);
             }
         }
-
-        public ForwardProtocol Protocol { get; set; }
-
-        public ForwardState State { get; set; }
 
         public Socket LocalServerSocket { get; set; }
 
@@ -276,24 +306,34 @@ namespace PortForward
             _LocalClientSockets.Add(client);
 
             MessageHandler message = new MessageHandler(client);
-            client.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
+            client.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientDataFromLocalServer, message);
 
             LocalServerSocket.BeginAccept(_BeginAcceptFromLocalServer, null);
         }
 
-        private void _BeginReceiveClientData(IAsyncResult ar)
+        private void _BeginReceiveClientDataFromLocalServer(IAsyncResult ar)
         {
-            MessageHandler message = (MessageHandler)ar.AsyncState;
-
+            MessageHandler message = ar.AsyncState as MessageHandler;
             int count = message.clientSocket.EndReceive(ar);
+            Console.WriteLine(message.clientSocket.Connected);
+            if (!message.clientSocket.Connected)
+            {
+                _LocalClientSockets.Remove(message.clientSocket);
+                return;
+            }
 
+            // TotalDownload 属性会修改ListView中对应列的值，所以这里要用委托
             Item.ListView.Invoke(new Action(() => {
+                long old_total_dl = TotalDownload;
                 TotalDownload += count; // 总下载字节数
+
+                // 计算下载速度
+                DownloadSpeed = TotalDownload - old_total_dl;
             }));
 
             byte[] data = message.GetData(count);
 
-            message.clientSocket.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientData, message);
+            message.clientSocket.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientDataFromLocalServer, message);
         }
     }
 

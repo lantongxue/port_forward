@@ -6,17 +6,33 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.ListViewItem;
 
 namespace PortForward
 {
     public partial class MainForm : Form
     {
+        ForwardItemManage forwardManage = new ForwardItemManage();
+
         public MainForm()
         {
             InitializeComponent();
         }
-        
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            List<ForwardItem> forwardItems = forwardManage.Select();
+            foreach(ForwardItem forward in forwardItems)
+            {
+                ListViewItem item = new ListViewItem();
+                forward.Item = item;
+                listView1.Items.Add(item);
+                if(forward.State == ForwardState.Runing)
+                {
+                    forward.Start();
+                }
+            }
+        }
+
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             EditForm form = new EditForm();
@@ -27,7 +43,9 @@ namespace PortForward
                 forward.Item = item;
                 listView1.Items.Add(item);
                 forward.Start();
+                forwardManage.Add(forward);
             }
         }
+
     }
 }

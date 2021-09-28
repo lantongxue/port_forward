@@ -64,6 +64,12 @@ namespace PortForward
                 forwardItem.Protocol = ForwardProtocol.Udp;
             }
 
+            if(NetworkTools.CheckPortUsed(forwardItem.LocalListenPort))
+            {
+                MessageBox.Show($"本地监听端口[{forwardItem.LocalListenPort}]已被使用", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             // 设置对话框返回值后，窗体会自动关闭
             DialogResult = DialogResult.OK;
         }

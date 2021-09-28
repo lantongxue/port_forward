@@ -43,5 +43,17 @@ namespace PortForward
             }
             return inUse;
         }
+
+        public static string BytesFormat(long bytes)
+        {
+            string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+            int i = 0;
+            for (; bytes >= 1024; i++)
+            {
+                bytes /= 1024;
+            }
+            string unit = units[i];
+            return (Math.Floor(bytes * 100.00) / 100) + unit;
+        }
     }
 }
