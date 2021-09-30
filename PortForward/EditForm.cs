@@ -22,6 +22,13 @@ namespace PortForward
         {
             InitializeComponent();
             forwardItem = forward;
+            textBox1.Text = forward.LocalListenAddress;
+            numericUpDown1.Value = forward.LocalListenPort;
+            textBox2.Text = forward.RemoteAddress;
+            numericUpDown2.Value = forward.RemotePort;
+            radioButton1.Checked = forward.Protocol == ForwardProtocol.Tcp;
+            radioButton2.Checked = forward.Protocol == ForwardProtocol.Udp;
+            textBox3.Text = forward.Title;
         }
 
         private void EditForm_Load(object sender, EventArgs e)
