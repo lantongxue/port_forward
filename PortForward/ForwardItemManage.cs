@@ -58,7 +58,7 @@ namespace PortForward
 
         public void Remove(ForwardItem forward)
         {
-            XmlNodeList list = root.SelectNodes("foward");
+            XmlNodeList list = root.SelectNodes("forward");
             foreach(XmlNode node in list)
             {
                 XmlNode id = node.SelectSingleNode("Id");
@@ -77,7 +77,7 @@ namespace PortForward
 
         public void Update(ForwardItem forward)
         {
-            XmlNodeList list = root.SelectNodes("foward");
+            XmlNodeList list = root.SelectNodes("forward");
             foreach (XmlNode node in list)
             {
                 XmlNode id = node.SelectSingleNode("Id");

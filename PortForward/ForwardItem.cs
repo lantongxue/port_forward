@@ -244,25 +244,30 @@ namespace PortForward
 
         public bool Stop()
         {
-            if(LocalServerSocket == null)
-            {
-                ErrorMessage = "本地监听服务尚未初始化";
-                return false;
-            }
+            //if(LocalServerSocket == null)
+            //{
+            //    ErrorMessage = "本地监听服务尚未初始化";
+            //    return false;
+            //}
 
-            if (RemoteClientSocket == null)
-            {
-                ErrorMessage = "尚未连接目标远程服务";
-                return false;
-            }
+            //if (RemoteClientSocket == null)
+            //{
+            //    ErrorMessage = "尚未连接目标远程服务";
+            //    return false;
+            //}
 
-            LocalServerSocket.Close();
+            LocalServerSocket?.Close();
             _LocalClientSockets.Clear();
-            RemoteClientSocket.Close();
+            RemoteClientSocket?.Close();
 
             State = ForwardState.Stopped;
 
             return true;
+        }
+
+        public bool Restart()
+        {
+            return Stop() && Start();
         }
 
         protected void _CreateSocketServer(IPAddress address)

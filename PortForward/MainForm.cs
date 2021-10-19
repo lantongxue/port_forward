@@ -25,6 +25,7 @@ namespace PortForward
             {
                 ListViewItem item = new ListViewItem();
                 forward.Item = item;
+                item.Tag = forward;
                 listView1.Items.Add(item);
                 if(forward.State == ForwardState.Runing)
                 {
@@ -50,5 +51,20 @@ namespace PortForward
             }
         }
 
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if(listView1.SelectedItems.Count > 0)
+            {
+                ListViewItem item = listView1.SelectedItems[0];
+                EditForm form = new EditForm(item.Tag as ForwardItem);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    ForwardItem forward = form.GetForwardItem();
+                    forward.Restart();
+
+                    forwardManage.Update(forward);
+                }
+            }
+        }
     }
 }
