@@ -244,21 +244,23 @@ namespace PortForward
 
         public bool Stop()
         {
-            //if(LocalServerSocket == null)
-            //{
-            //    ErrorMessage = "本地监听服务尚未初始化";
-            //    return false;
-            //}
+            if(State == ForwardState.Stopped)
+            {
+                ErrorMessage = "服务尚未启动";
+                return false;
+            }
 
-            //if (RemoteClientSocket == null)
-            //{
-            //    ErrorMessage = "尚未连接目标远程服务";
-            //    return false;
-            //}
-
-            LocalServerSocket?.Close();
+            if(LocalServerSocket.Connected)
+            {
+                LocalServerSocket.Shutdown(SocketShutdown.Both);
+            }
+            if(RemoteClientSocket.Connected)
+            {
+                RemoteClientSocket.Shutdown(SocketShutdown.Both);
+            }
+            LocalServerSocket.Close();
             _LocalClientSockets.Clear();
-            RemoteClientSocket?.Close();
+            RemoteClientSocket.Close();
 
             State = ForwardState.Stopped;
 
@@ -306,14 +308,17 @@ namespace PortForward
 
         private void _BeginAcceptFromLocalServer(IAsyncResult ar)
         {
-            Socket client = LocalServerSocket.EndAccept(ar);
+            if(LocalServerSocket != null && LocalServerSocket.Connected)
+            {
+                Socket client = LocalServerSocket.EndAccept(ar);
 
-            _LocalClientSockets.Add(client);
+                _LocalClientSockets.Add(client);
 
-            MessageHandler message = new MessageHandler(client);
-            client.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientDataFromLocalServer, message);
+                MessageHandler message = new MessageHandler(client);
+                client.BeginReceive(message.Buffer, message.GetIndex, message.RemainSize, SocketFlags.None, _BeginReceiveClientDataFromLocalServer, message);
 
-            LocalServerSocket.BeginAccept(_BeginAcceptFromLocalServer, null);
+                LocalServerSocket.BeginAccept(_BeginAcceptFromLocalServer, null);
+            }
         }
 
         private void _BeginReceiveClientDataFromLocalServer(IAsyncResult ar)
